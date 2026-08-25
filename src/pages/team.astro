@@ -1,0 +1,104 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout uid="team">
+  <div class="content resume-team">
+    <h1
+      class="title"
+      data-motion-text="true"
+      data-motion-text-split="chars"
+      data-motion-text-duration="0.5"
+    >
+      证书与技能
+    </h1>
+
+    <!-- 证书图片画廊 -->
+    <div class="cert-section-card">
+      <div class="section-header">
+        <i class="fas fa-certificate"></i>
+        <h2>证书</h2>
+      </div>
+
+      <div class="cert-gallery">
+        <div class="cert-gallery-item">
+          <img
+            src="/certificates/证书1.png"
+            alt="向宇然证书1"
+            loading="lazy"
+          />
+          <div class="cert-caption">
+            <span class="cert-label">AI · ADVANCED</span>
+            <span class="cert-name">阿里巴巴人工智能训练师 — 高级证书</span>
+          </div>
+        </div>
+
+        <div class="cert-gallery-item">
+          <img
+            src="/certificates/证书2.jpg"
+            alt="向宇然证书2"
+            loading="lazy"
+          />
+          <div class="cert-caption">
+            <span class="cert-label">AI · FOUNDATION</span>
+            <span class="cert-name">阿里巴巴人工智能训练师 — 初级证书</span>
+          </div>
+        </div>
+
+        <div class="cert-gallery-item">
+          <img
+            src="/certificates/证书3.png"
+            alt="向宇然证书3"
+            loading="lazy"
+          />
+          <div class="cert-caption">
+            <span class="cert-label">CERTIFICATE</span>
+            <span class="cert-name">AI 相关证书</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 技能 -->
+    <div class="section-card">
+      <div class="section-header">
+        <i class="fas fa-cogs"></i>
+        <h2>技能</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3><i class="fas fa-robot"></i> AI</h3>
+          <div class="skill-tags">
+            <span>AI 智能体</span>
+            <span>AI 辅助编程</span>
+            <span>AI 内容创作</span>
+            <span>AI PPT</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3><i class="fas fa-code"></i> 项目</h3>
+          <div class="skill-tags">
+            <span>游戏开发</span>
+            <span>个人网站</span>
+            <span>知识库搭建</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3><i class="fas fa-users"></i> 通用</h3>
+          <div class="skill-tags">
+            <span>沟通协调</span>
+            <span>团队协作</span>
+            <span>自主学习</span>
+            <span>任务执行</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3><i class="fas fa-laptop-code"></i> 编程</h3>
+          <div class="skill-tags">
+            <span class="pending">待补充：HTML / CSS / JavaScript / Python 等</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
