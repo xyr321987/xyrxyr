@@ -1,5 +1,11 @@
 import gsap from 'gsap';
 
+/**
+ * 初始化项目图片弹跳画廊
+ * 完全模仿 codrops_mwg 的交互方式：
+ * - 累计移动距离触发图片生成
+ * - 图片从鼠标位置弹跳出现，缩放后下落，然后再次弹跳
+ */
 export function initProjectGallery(container) {
   const images = [
     '/projects/项目1.jpg',
@@ -10,24 +16,18 @@ export function initProjectGallery(container) {
     '/projects/项目6.jpg',
   ];
 
-  let indexImg = 0;
   let incr = 0;
   let oldIncrX = 0;
   let oldIncrY = 0;
   let firstMove = true;
+  let indexImg = 0;
 
-  const isCoarsePointer = window.matchMedia('(hover: none)').matches;
-  const resetDist = window.innerWidth / (isCoarsePointer ? 6 : 8);
-  const W = window.innerWidth;
-  const containerRect = container.getBoundingClientRect();
-  const H = containerRect.height;
-  const clampX = gsap.utils.clamp(0, W);
-  const clampY = gsap.utils.clamp(0, H);
+  const resetDist = window.innerWidth / 8;
 
   function applyMove(clientX, clientY) {
     const rect = container.getBoundingClientRect();
-    const valX = clampX(clientX);
-    const valY = clampY(clientY - rect.top);
+    const valX = clientX;
+    const valY = clientY - rect.top;
 
     if (firstMove) {
       firstMove = false;
@@ -47,105 +47,82 @@ export function initProjectGallery(container) {
     oldIncrY = valY;
   }
 
-  function handleMouseMove(e) {
+  function onMouseMove(e) {
     applyMove(e.clientX, e.clientY);
   }
 
-  function handleTouchMove(e) {
-    if (!e.touches || !e.touches[0]) return;
-    applyMove(e.touches[0].clientX, e.touches[0].clientY);
-  }
+  container.addEventListener('mousemove', onMouseMove);
 
   function createMedia(x, y, deltaX, deltaY) {
-    const rect = container.getBoundingClientRect();
-    const H = rect.height;
+    const H = container.getBoundingClientRect().height;
 
-    if (y > H - 200) return;
+    // 不在太靠近底部的地方生成
+    if (y > H - 100) return;
 
-    const image = document.createElement('img');
-    image.setAttribute('src', images[indexImg]);
-    image.className = 'gallery-flying-img';
-    container.appendChild(image);
+    const img = document.createElement('img');
+    img.src = images[indexImg];
+    img.className = 'gallery-flying-img';
+    img.onerror = function () { this.remove(); };
+
+    container.appendChild(img);
 
     const tl = gsap.timeline({
       onComplete: () => {
-        container.removeChild(image);
-        tl && tl.kill();
+        if (img.parentNode) img.parentNode.removeChild(img);
+        tl.kill();
       },
     });
 
-    tl.fromTo(
-      image,
-      {
-        xPercent: -50 + (Math.random() - 0.5) * 80,
-        yPercent: -50 + (Math.random() - 0.5) * 10,
-        scaleX: 1.3,
-        scaleY: 1.3,
-        rotation: (Math.random() - 0.5) * 20,
-      },
-      {
-        scaleX: 1,
-        scaleY: 1,
-        ease: 'elastic.out(2, 0.6)',
-        duration: 0.4,
-      },
-    );
+    // Phase 1: 弹性弹跳出现
+    tl.fromTo(img, {
+      xPercent: -50 + (Math.random() - 0.5) * 80,
+      yPercent: -50 + (Math.random() - 0.5) * 10,
+      scaleX: 1.3,
+      scaleY: 1.3,
+      rotation: (Math.random() - 0.5) * 20,
+    }, {
+      scaleX: 1,
+      scaleY: 1,
+      ease: 'elastic.out(2, 0.6)',
+      duration: 0.4,
+    });
 
-    tl.fromTo(
-      image,
-      {
-        x: x - rect.left,
-      },
-      {
-        x: '+=' + deltaX * 2,
-        rotation: 0,
-        ease: 'power1.in',
-        duration: 0.4,
-      },
-      '<',
-    );
+    tl.fromTo(img, {
+      x: x,
+    }, {
+      x: '+=' + deltaX * 2,
+      rotation: 0,
+      ease: 'power1.in',
+      duration: 0.4,
+    }, '<');
 
-    tl.fromTo(
-      image,
-      {
-        y: y,
-      },
-      {
-        y: '+=' + (H - y),
-        scale: 0.9,
-        yPercent: -95,
-        ease: 'back.in(1.1)',
-        duration: 0.4,
-      },
-      '<',
-    );
+    tl.fromTo(img, {
+      y: y,
+    }, {
+      y: '+=' + (H - y),
+      scale: 0.9,
+      yPercent: -95,
+      ease: 'back.in(1.1)',
+      duration: 0.4,
+    }, '<');
 
-    tl.to(image, {
+    // Phase 2: BOUNCE - 二次弹跳
+    tl.to(img, {
       x: '+=' + deltaX * 1.6,
       rotation: (Math.random() - 0.5) * 40,
       ease: 'power1.in',
       duration: 0.3,
     });
-    tl.to(
-      image,
-      {
-        yPercent: 150,
-        ease: 'back.in(' + (1.5 + (1 - y / H)) + ')',
-        duration: 0.3,
-      },
-      '<',
-    );
+    tl.to(img, {
+      yPercent: 150,
+      ease: 'back.in(' + (1.5 + (1 - y / H)) + ')',
+      duration: 0.3,
+    }, '<');
 
     indexImg = (indexImg + 1) % images.length;
   }
 
-  container.addEventListener('mousemove', handleMouseMove);
-  container.addEventListener('touchstart', handleTouchMove, { passive: true });
-  container.addEventListener('touchmove', handleTouchMove, { passive: true });
-
   return () => {
-    container.removeEventListener('mousemove', handleMouseMove);
-    container.removeEventListener('touchstart', handleTouchMove);
-    container.removeEventListener('touchmove', handleTouchMove);
+    container.removeEventListener('mousemove', onMouseMove);
   };
 }
