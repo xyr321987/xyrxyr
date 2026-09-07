@@ -1,0 +1,106 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout uid="works">
+  <div class="content resume-works">
+    <h1
+      class="title"
+      data-motion-text="true"
+      data-motion-text-split="chars"
+      data-motion-text-duration="0.5"
+    >
+      项目经历
+    </h1>
+
+    <!-- 交互式图片画廊 -->
+    <div class="project-gallery" id="projectGallery">
+      <p class="gallery-hint">移动鼠标 · 查看项目展示</p>
+    </div>
+
+    <!-- 项目卡片横排 -->
+    <div class="project-cards-row">
+      <div class="hover-card" data-index="0">
+        <div class="hover-card-inner">
+          <h3>Vibe Coding · 坦克大战小游戏</h3>
+          <p class="hover-card-desc">使用 AI 辅助完成游戏设计、代码编写及功能调试，实现坦克移动、射击、碰撞等基础玩法，独立完成"需求拆解 — 开发 — 测试 — 优化"全流程。</p>
+          <div class="hover-card-meta">
+            <span class="hc-status">✅ 已完成可运行 Demo</span>
+            <span class="hc-link pending">项目链接：待补充</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hover-card" data-index="1">
+        <div class="hover-card-inner">
+          <h3>Vibe Coding · 飞机大战小游戏</h3>
+          <p class="hover-card-desc">使用 AI 辅助进行游戏逻辑设计与代码开发，实现飞机移动、敌机生成、攻击及碰撞等功能，通过 AI 辅助解决开发问题并持续迭代。</p>
+          <div class="hover-card-meta">
+            <span class="hc-status">✅ 已完成可运行 Demo</span>
+            <span class="hc-link pending">项目链接：待补充</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hover-card" data-index="2">
+        <div class="hover-card-inner">
+          <h3>AI 应用实践 · 音乐 & PPT</h3>
+          <p class="hover-card-desc">使用 AI 完成音乐创作、内容生成及多轮优化；使用 AI 辅助完成 PPT 内容整理、结构设计与视觉优化。探索 AI 在内容生产及学习效率提升中的实际应用。</p>
+          <div class="hover-card-meta">
+            <span class="hc-link pending">作品链接：待补充</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hover-card" data-index="3">
+        <div class="hover-card-inner">
+          <h3>AI 智能体 · 个人知识库</h3>
+          <p class="hover-card-desc">使用智能体搭建个人知识库，整理个人学习资料，实现信息分类、知识检索及 AI 辅助问答，探索 AI 在个人学习与知识管理中的应用。</p>
+          <div class="hover-card-meta">
+            <span class="hc-link pending">知识库链接：待补充</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hover-card" data-index="4">
+        <div class="hover-card-inner">
+          <h3>AI 个人网站</h3>
+          <p class="hover-card-desc">使用 AI 辅助完成网站页面设计、代码生成及功能迭代，整合个人经历、项目及作品，搭建个人数字化展示平台，独立完成网站内容规划及基础开发。</p>
+          <div class="hover-card-meta">
+            <span class="hc-link pending">网站地址：待补充</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // 3D 鼠标跟踪倾斜效果
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.hover-card');
+
+    cards.forEach((card) => {
+      const inner = card.querySelector('.hover-card-inner');
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -8;
+        const rotateY = ((x - centerX) / centerX) * 8;
+
+        inner.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        // 光晕跟随鼠标
+        inner.style.setProperty('--mx', ((x / rect.width) * 100) + '%');
+        inner.style.setProperty('--my', ((y / rect.height) * 100) + '%');
+      });
+
+      card.addEventListener('mouseleave', () => {
+        inner.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      });
+    });
+  });
+</script>

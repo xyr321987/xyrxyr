@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout uid="index">
+  <div class="content resume-index">
+    <!-- 头像与姓名 -->
+    <div class="hero-section">
+      <div class="avatar">
+        <img src="/头像.jpeg" alt="向宇然" class="avatar-img" />
+      </div>
+      <h1
+        class="title"
+        data-motion-text="true"
+        data-motion-text-split="chars"
+        data-motion-text-duration="0.5"
+      >
+        向宇然
+      </h1>
+      <p class="subtitle">浙江海洋大学 · 护理学 · 本科 · 2026级</p>
+      <div class="contact-bar">
+        <span><i class="fas fa-phone"></i> 19818004223</span>
+        <span><i class="fab fa-weixin"></i> x15088957735</span>
+        <span><i class="fas fa-envelope"></i> 1771620820@qq.com</span>
+      </div>
+    </div>
+
+    <!-- 座右铭 -->
+    <div class="quote-card">
+      <span class="quote-mark">"</span>
+      <p class="quote-line">你不必属于</p>
+      <p class="quote-line bold">出生的那座山，</p>
+      <p class="quote-line">你当像鸟</p>
+      <p class="quote-line highlight">飞往你的山。</p>
+      <span class="quote-mark close">"</span>
+    </div>
+  </div>
+</Layout>
