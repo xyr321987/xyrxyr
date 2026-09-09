@@ -261,26 +261,24 @@ const certPath = (f) => `${base}certificates/${f}`;
 	    const items = track.querySelectorAll('.cert-gallery-item');
 	    if (items.length === 0) return;
 
-	    let itemWidth = 0;
 	    let gap = 14;
-	    let visibleCount = 4;
-	    let position = 0;          // 当前 translateX 偏移（负值）
-	    let maxPosition = 0;       // 最大可滑动距离
-	    let autoSpeed = 0.4;       // 自动滑动速度 (px/frame)
-	    let isAutoPlaying = true;
-	    let isHovering = false;
-	    let isManualScrolling = false;
-	    let manualTimeout = null;
+	    let position = 0;
+	    let maxPosition = 0;
+	    let autoSpeed = 0.4;
+	    let isPaused = false;         // 悬停/拖拽/滚轮时暂停自动滑动
+	    let resumeTimer = null;
 	    let rafId = null;
 
+	    // 拖拽相关（触摸 & 鼠标通用）
+	    let isDragging = false;
+	    let dragStartX = 0;
+	    let dragStartPos = 0;
+
 	    function calcDimensions() {
-	      const rect = items[0].getBoundingClientRect();
-	      itemWidth = rect.width;
 	      const wrapperRect = wrapper.getBoundingClientRect();
 	      const style = getComputedStyle(track);
 	      gap = parseInt(style.gap) || 14;
-	      visibleCount = wrapperRect.width / (itemWidth + gap);
-	      visibleCount = Math.floor(visibleCount) || 1;
+	      const itemWidth = items[0].getBoundingClientRect().width;
 	      const totalWidth = items.length * (itemWidth + gap);
 	      maxPosition = totalWidth - wrapperRect.width;
 	      if (maxPosition < 0) maxPosition = 0;
@@ -290,12 +288,16 @@ const certPath = (f) => `${base}certificates/${f}`;
 	      track.style.transform = `translateX(${-position}px)`;
 	    }
 
+	    function clamp(v) {
+	      if (v < 0) return 0;
+	      if (v > maxPosition) return maxPosition;
+	      return v;
+	    }
+
 	    function autoSlide() {
-	      if (!isAutoPlaying || isHovering || isManualScrolling) return;
+	      if (isPaused) return;
 	      position += autoSpeed;
-	      if (position >= maxPosition) {
-	        position = 0;
-	      }
+	      if (position >= maxPosition) position = 0;
 	      updateTransform();
 	    }
 
@@ -304,28 +306,55 @@ const certPath = (f) => `${base}certificates/${f}`;
 	      rafId = requestAnimationFrame(loop);
 	    }
 
-	    // 鼠标滚轮控制
+	    function pauseTemporarily(ms) {
+	      isPaused = true;
+	      if (resumeTimer) clearTimeout(resumeTimer);
+	      resumeTimer = setTimeout(() => {
+	        isPaused = false;
+	      }, ms);
+	    }
+
+	    // 鼠标滚轮控制（桌面）
 	    wrapper.addEventListener('wheel', (e) => {
 	      e.preventDefault();
-	      isManualScrolling = true;
-	      if (manualTimeout) clearTimeout(manualTimeout);
-
-	      position += e.deltaY * 0.5;
-	      if (position < 0) position = 0;
-	      if (position > maxPosition) position = maxPosition;
+	      position = clamp(position + e.deltaY * 0.5);
 	      updateTransform();
-
-	      manualTimeout = setTimeout(() => {
-	        isManualScrolling = false;
-	      }, 2000);
+	      pauseTemporarily(2000);
 	    }, { passive: false });
 
-	    // 鼠标悬停暂停自动滑动
+	    // —— 触摸 / 鼠标拖拽控制（手机手指滑动）——
+	    wrapper.addEventListener('pointerdown', (e) => {
+	      isDragging = true;
+	      dragStartX = e.clientX;
+	      dragStartPos = position;
+	      isPaused = true;
+	      if (resumeTimer) clearTimeout(resumeTimer);
+	    });
+
+	    window.addEventListener('pointermove', (e) => {
+	      if (!isDragging) return;
+	      const dx = e.clientX - dragStartX;
+	      position = clamp(dragStartPos - dx);
+	      updateTransform();
+	    });
+
+	    window.addEventListener('pointerup', () => {
+	      if (!isDragging) return;
+	      isDragging = false;
+	      pauseTemporarily(2000);
+	    });
+
+	    window.addEventListener('pointercancel', () => {
+	      isDragging = false;
+	      pauseTemporarily(1500);
+	    });
+
+	    // 鼠标悬停暂停自动滑动（仅桌面有意义）
 	    wrapper.addEventListener('mouseenter', () => {
-	      isHovering = true;
+	      if (window.matchMedia('(hover: hover)').matches) pauseTemporarily(3000);
 	    });
 	    wrapper.addEventListener('mouseleave', () => {
-	      isHovering = false;
+	      if (window.matchMedia('(hover: hover)').matches) pauseTemporarily(1000);
 	    });
 
 	    // 窗口尺寸变化重新计算

@@ -846,6 +846,7 @@ html,
   width: 100%;
   position: relative;
   margin-top: 0.5rem;
+  touch-action: pan-y;
 }
 
 .cert-gallery {
