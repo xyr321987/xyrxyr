@@ -1,5 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
+const base = import.meta.env.BASE_URL;
+const certPath = (f) => `${base}certificates/${f}`;
 ---
 
 <Layout uid="team">
@@ -25,7 +27,7 @@ import Layout from "../layouts/Layout.astro";
       <div class="cert-gallery">
         <div class="cert-gallery-item">
           <img
-            src="/certificates/证书1.png"
+            src={certPath("证书1.png")}
             alt="向宇然证书1"
             loading="lazy"
           />
@@ -37,7 +39,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/证书2.jpg"
+            src={certPath("证书2.jpg")}
             alt="向宇然证书2"
             loading="lazy"
           />
@@ -49,7 +51,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/证书3.png"
+            src={certPath("证书3.png")}
             alt="向宇然证书3"
             loading="lazy"
           />
@@ -61,7 +63,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/img_bc4eff662a7cc5b3ff16c732063eed85.png"
+            src={certPath("img_bc4eff662a7cc5b3ff16c732063eed85.png")}
             alt="认证证书"
             loading="lazy"
           />
@@ -73,7 +75,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/img_89943047dd5e24e15bd6e76a29f378c8.png"
+            src={certPath("img_89943047dd5e24e15bd6e76a29f378c8.png")}
             alt="认证证书"
             loading="lazy"
           />
@@ -85,7 +87,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/img_445d3438b695e44b91e18c2caa06c140.png"
+            src={certPath("img_445d3438b695e44b91e18c2caa06c140.png")}
             alt="认证证书"
             loading="lazy"
           />
@@ -97,7 +99,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/Ai大学认证证书 (1).png"
+            src={certPath("Ai大学认证证书 (1).png")}
             alt="Ai大学认证证书1"
             loading="lazy"
           />
@@ -109,7 +111,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/Ai大学认证证书 (2).png"
+            src={certPath("Ai大学认证证书 (2).png")}
             alt="Ai大学认证证书2"
             loading="lazy"
           />
@@ -121,7 +123,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/Ai大学认证证书 (3).png"
+            src={certPath("Ai大学认证证书 (3).png")}
             alt="Ai大学认证证书3"
             loading="lazy"
           />
@@ -133,7 +135,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/Ai大学认证证书 (4).png"
+            src={certPath("Ai大学认证证书 (4).png")}
             alt="Ai大学认证证书4"
             loading="lazy"
           />
@@ -145,7 +147,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/258496-wJOVPkw8DEZtIEMFDy1HnQ.png"
+            src={certPath("258496-wJOVPkw8DEZtIEMFDy1HnQ.png")}
             alt="认证证书"
             loading="lazy"
           />
@@ -157,7 +159,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/258496-Vfo7P6Y-w0FLnNzvEZ-eTQ.png"
+            src={certPath("258496-Vfo7P6Y-w0FLnNzvEZ-eTQ.png")}
             alt="认证证书"
             loading="lazy"
           />
@@ -169,7 +171,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/258496-P68dRu5zgVeGxRR_mziIGQ.png"
+            src={certPath("258496-P68dRu5zgVeGxRR_mziIGQ.png")}
             alt="认证证书"
             loading="lazy"
           />
@@ -181,7 +183,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/258496-CvSiafxtdouzpSeOq7RtHA.png"
+            src={certPath("258496-CvSiafxtdouzpSeOq7RtHA.png")}
             alt="认证证书"
             loading="lazy"
           />
@@ -193,7 +195,7 @@ import Layout from "../layouts/Layout.astro";
 
         <div class="cert-gallery-item">
           <img
-            src="/certificates/证书9.png"
+            src={certPath("证书9.png")}
             alt="认证证书"
             loading="lazy"
           />

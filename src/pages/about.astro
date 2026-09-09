@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout uid="about">
@@ -18,7 +19,7 @@ import Layout from "../layouts/Layout.astro";
       <article class="project-card" data-index="0">
         <div class="project-image">
           <span class="project-number">01</span>
-          <img src="/实践1.jpg" alt="新东方中考地推" loading="lazy" />
+          <img src={`${base}实践1.jpg`} alt="新东方中考地推" loading="lazy" />
         </div>
         <div class="project-content">
           <div class="project-meta">
@@ -42,7 +43,7 @@ import Layout from "../layouts/Layout.astro";
       <article class="project-card" data-index="1">
         <div class="project-image">
           <span class="project-number">02</span>
-          <img src="/实践2.jpg" alt="美甲店美甲师" loading="lazy" />
+          <img src={`${base}实践2.jpg`} alt="美甲店美甲师" loading="lazy" />
         </div>
         <div class="project-content">
           <div class="project-meta">
@@ -66,7 +67,7 @@ import Layout from "../layouts/Layout.astro";
       <article class="project-card" data-index="2">
         <div class="project-image">
           <span class="project-number">03</span>
-          <img src="/实践3.jpg" alt="班级班长" loading="lazy" />
+          <img src={`${base}实践3.jpg`} alt="班级班长" loading="lazy" />
         </div>
         <div class="project-content">
           <div class="project-meta">

@@ -7,13 +7,14 @@ import gsap from 'gsap';
  * - 图片从鼠标位置弹跳出现，缩放后下落，然后再次弹跳
  */
 export function initProjectGallery(container) {
-  const images = [
-    '/projects/项目1.jpg',
-    '/projects/项目2.jpg',
-    '/projects/项目3.jpg',
-    '/projects/项目4.jpg',
-    '/projects/项目5.jpg',
-    '/projects/项目6.jpg',
+  const base = import.meta.env.BASE_URL;
+const images = [
+    `${base}projects/项目1.jpg`,
+    `${base}projects/项目2.jpg`,
+    `${base}projects/项目3.jpg`,
+    `${base}projects/项目4.jpg`,
+    `${base}projects/项目5.jpg`,
+    `${base}projects/项目6.jpg`,
   ];
 
   let incr = 0;
