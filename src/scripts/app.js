@@ -7,6 +7,7 @@ import { SplitText } from 'gsap/SplitText';
 import { CustomEase } from 'gsap/CustomEase';
 import DrawSVGPlugin from 'gsap/DrawSVGPlugin';
 import { initProjectGallery } from './components/project-gallery';
+import { initCertCarousel } from './components/cert-carousel';
 
 class App {
   constructor() {
@@ -15,6 +16,7 @@ class App {
     this.motionTexts.animationIn();
 
     this.galleryCleanup = null;
+    this.certCleanup = null;
 
     this.transitionOverlay = select('.transition__overlay');
     this.titleDestination = select('.transition__overlay .title__destination');
@@ -199,7 +201,7 @@ class App {
             tl.to(this.transitionOverlay, { '--clip': 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' });
             return new Promise((resolve) => { tl.call(() => { this.motionTexts.destroy(); resolve(); }); });
           },
-          after: () => {
+          after: (data) => {
             const tl = gsap.timeline({
               defaults: { duration: 1, ease: 'hop' },
               onComplete: () => {
@@ -213,7 +215,17 @@ class App {
               '--clip': 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
               onStart: () => { this.motionTexts.init(); this.motionTexts.animationIn(); },
             }, '<+0.25');
-            return new Promise((resolve) => { tl.call(() => { this.barbaWrapper.classList.remove('is__transitioning'); this.transitionOverlay.classList.remove('team__transition'); resolve(); }); });
+            return new Promise((resolve) => { tl.call(() => {
+              this.barbaWrapper.classList.remove('is__transitioning');
+              this.transitionOverlay.classList.remove('team__transition');
+              // 初始化证书轮播（Barba 切换页面不会执行内联脚本，需在过渡后手动初始化）
+              const certTrack = data.next.container.querySelector('.cert-track-wrapper');
+              if (certTrack && !certTrack.dataset.certInited) {
+                certTrack.dataset.certInited = 'true';
+                this.certCleanup = initCertCarousel(data.next.container);
+              }
+              resolve();
+            }); });
           },
         },
         {
@@ -322,6 +334,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (gallery) {
         gallery.dataset.galleryInited = 'true';
         app.galleryCleanup = initProjectGallery(gallery);
+      }
+    }
+
+    // 初始页面如果是 team，初始化证书轮播
+    if (container && container.dataset.barbaNamespace === 'team') {
+      const certTrack = container.querySelector('.cert-track-wrapper');
+      if (certTrack && !certTrack.dataset.certInited) {
+        certTrack.dataset.certInited = 'true';
+        app.certCleanup = initCertCarousel(container);
       }
     }
   } catch (e) {
